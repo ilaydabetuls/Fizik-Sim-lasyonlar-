@@ -1,0 +1,5 @@
+export const preTest1Questions = [
+  { id: "q1", text: "Bir topu havaya doğru dik (düşey) olarak fırlatıyorsunuz. En yüksek noktada, topun;", options: [{ id: "A", text: "Hızı ve ivmesi sıfırdır." }, { id: "B", text: "Hızı sıfırdan farklıdır ancak ivmesi sıfırdır." }, { id: "C", text: "İvmesi sıfırdan farklıdır ancak hızı sıfırdır." }, { id: "D", text: "Hızı ve ivmesi sıfırdan farklıdır." }] },
+  { id: "q2", text: "Aşağıdaki şekilde gösterildiği gibi, bir tepenin kenarından bir top ateşlenir. 1-5 yollarından hangisi, merminin/güllenin izleyeceği en yakın yoldur?", image: "/images/sim1_pretest_q2.png", options: [{ id: "A", text: "1" }, { id: "B", text: "2" }, { id: "C", text: "3" }, { id: "D", text: "4" }, { id: "E", text: "5" }] },
+  { id: "q3", text: "Hava sürtünmesinin olmadığı bir ortamda bir cismi serbest bırakırsanız, aşağı doğru 9.8 m/s² ivme ile hızlanır. Bunun yerine cismi aşağı doğru fırlatırsanız, elinizden çıktıktan sonraki aşağı yönlü ivmesi ne olur?", options: [{ id: "A", text: "9.8 m/s²'den küçüktür." }, { id: "B", text: "9.8 m/s²'dir." }, { id: "C", text: "9.8 m/s²'den büyüktür." }] }
+];
