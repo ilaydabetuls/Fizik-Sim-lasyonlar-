@@ -1,0 +1,43 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+export default function AdminLogin() {
+  const [code, setCode] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Basit şifre kontrolü
+    if (code === 'SUPER_ADMIN_428') {
+      localStorage.setItem('adminCode', code);
+      navigate('/admin'); // Şifre doğruysa panele yönlendir
+    } else {
+      setError('Geçersiz yönetici kodu!');
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-900">
+      <form onSubmit={handleLogin} className="bg-white p-8 rounded-xl shadow-lg w-96 text-center">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Yönetici Girişi</h2>
+        
+        <input 
+          type="password" 
+          placeholder="Yönetici Kodunu Girin"
+          className="w-full px-4 py-3 border rounded-lg text-center font-mono focus:ring-2 focus:ring-blue-500 outline-none mb-4"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          required
+        />
+
+        {error && <div className="text-red-500 text-sm mb-4 font-semibold">{error}</div>}
+
+        <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition">
+          Giriş Yap
+        </button>
+      </form>
+    </div>
+  );
+}
