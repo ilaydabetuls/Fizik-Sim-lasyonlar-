@@ -1,4 +1,3 @@
-import React from 'react';
 export default function StatusBadge({ status }: { status: string }) {
   let bg = 'bg-gray-100 text-gray-600';
   if (status === 'Ön Test Tamamlandı') bg = 'bg-blue-100 text-blue-800';

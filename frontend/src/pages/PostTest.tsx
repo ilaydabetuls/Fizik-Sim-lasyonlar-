@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { postTest1Questions } from '../data/postTest1';
+import { API_BASE_URL } from '../config';
 
 export default function PostTest() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export default function PostTest() {
 
   const submit = async () => {
     if (Object.keys(answers).length < postTest1Questions.length) return alert("Tüm soruları yanıtlayın.");
-    await axios.post('http://localhost:8000/api/post-test/submit', { participantCode: localStorage.getItem('participantCode'), answers, logs: Object.values(logs), startedAt: new Date(testStartTime.current).toISOString(), finishedAt: new Date().toISOString(), totalDuration: (Date.now() - testStartTime.current)/1000 });
+    await axios.post(`${API_BASE_URL}/api/post-test/submit`, { participantCode: localStorage.getItem('participantCode'), answers, logs: Object.values(logs), startedAt: new Date(testStartTime.current).toISOString(), finishedAt: new Date().toISOString(), totalDuration: (Date.now() - testStartTime.current)/1000 });
     setIsCompleted(true);
   };
 

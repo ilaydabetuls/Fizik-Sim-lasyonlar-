@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { preTest1Questions } from '../data/preTest1';
+import { API_BASE_URL } from '../config';
 
 export default function PreTest() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export default function PreTest() {
 
   const submit = async () => {
     if (Object.keys(answers).length < preTest1Questions.length) return alert("Tüm soruları yanıtlayın.");
-    await axios.post('http://localhost:8000/api/pre-test/submit', { participantCode: localStorage.getItem('participantCode'), answers, logs: Object.values(logs), startedAt: new Date(testStartTime.current).toISOString(), finishedAt: new Date().toISOString(), totalDuration: (Date.now() - testStartTime.current)/1000 });
+    await axios.post(`${API_BASE_URL}/api/pre-test/submit`, { participantCode: localStorage.getItem('participantCode'), answers, logs: Object.values(logs), startedAt: new Date(testStartTime.current).toISOString(), finishedAt: new Date().toISOString(), totalDuration: (Date.now() - testStartTime.current)/1000 });
     setIsCompleted(true);
   };
 

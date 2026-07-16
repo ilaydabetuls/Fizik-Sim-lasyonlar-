@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 export default function Login() {
   const [code, setCode] = useState('');
@@ -10,7 +11,7 @@ export default function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:8000/api/login', { code });
+      const { data } = await axios.post(`${API_BASE_URL}/api/login`, { code });
       localStorage.setItem('participantCode', data.participantCode);
       if (!data.preTestCompleted) navigate('/pre-test');
       else navigate('/post-test');
