@@ -1,46 +1,17 @@
-# Fizik Simülasyonları Araştırması
+# Fizik-Sim-lasyonlar-
 
-Bu proje, fizik konularında eğik atış ve serbest düşme gibi konseptleri öğrenmek için tasarlanmış web tabanlı bir araştırma platformudur.
+Bu depo artık statik-only olarak yayınlanmıştır. Admin girişinin hızlı testi için docs dizininde bir statik sayfa bulunmaktadır.
 
-## Kurulum
+Static site URL (GitHub Pages):
+- After enabling Pages: `https://<your-github-username>.github.io/Fizik-Sim-lasyonlar-/`
 
-### Backend Kurulumu
+Nasıl yayınlanır (GitHub Pages üzerinden):
+1. Repo ayarlarına gidin (Settings → Pages).
+2. Source bölümünden `Branch: main` ve `Folder: /docs` seçin.
+3. Save tıklayın ve birkaç dakika bekleyin.
 
-```bash
-cd backend
-pip install -r requirements.txt
-uvicorn main:app --reload
-```
+Artık site `docs/index.html` üzerinde yayınlanacaktır. Admin testi için:
+- Açın: `/admin.html` veya `index.html`.
+- Mock mode ile test kullanıcı: `admin` / `password`.
 
-Backend `http://localhost:8000` adresinde çalışacaktır.
-
-### Frontend Kurulumu
-
-```bash
-cd frontend
-npm install
-npm start
-```
-
-Frontend `http://localhost:3000` adresinde çalışacaktır.
-
-## Proje Yapısı
-
-- `backend/` - FastAPI uygulaması
-- `frontend/` - React uygulaması
-
-## API Endpoints
-
-### Öğrenci Rotaları
-- `POST /api/login` - Giriş yap
-- `POST /api/student/status` - Durum kontrol et
-- `POST /api/pre-test/submit` - Ön testi gönder
-- `POST /api/post-test/submit` - Son testi gönder
-
-### Admin Rotaları
-- `GET /api/admin/hierarchy` - Hiyerarşi görüntüle
-- `GET /api/admin/participants` - Katılımcıları listele
-- `GET /api/admin/participant/{code}` - Katılımcı detayı
-- `POST /api/admin/participant/{code}/unlock` - Testi kilit aç
-- `POST /api/admin/participant/{code}/reset` - Testi sıfırla
-- `GET /api/admin/advanced-analysis` - Analiz ver
+Not: Eğer Vercel projesini silmek isterseniz Vercel dashboard üzerinden projenizi silin.
