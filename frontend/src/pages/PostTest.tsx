@@ -1,8 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { postTest1Questions } from '../data/postTest1';
 import { API_BASE_URL } from '../config';
+
+const postTest1Questions = [
+  {
+    id: 'q1',
+    text: 'Eğik atışta, hava direnci yokken, yatay hız bileşeni nasıl değişir?',
+    options: [
+      { id: 'A', text: 'Sabit kalır' },
+      { id: 'B', text: 'Zamanla artar' },
+      { id: 'C', text: 'Zamanla azalır' },
+      { id: 'D', text: 'Değişkene bağlıdır' }
+    ]
+  }
+];
 
 export default function PostTest() {
   const navigate = useNavigate();
@@ -29,8 +41,12 @@ export default function PostTest() {
 
   const submit = async () => {
     if (Object.keys(answers).length < postTest1Questions.length) return alert("Tüm soruları yanıtlayın.");
-    await axios.post(`${API_BASE_URL}/api/post-test/submit`, { participantCode: localStorage.getItem('participantCode'), answers, logs: Object.values(logs), startedAt: new Date(testStartTime.current).toISOString(), finishedAt: new Date().toISOString(), totalDuration: (Date.now() - testStartTime.current)/1000 });
-    setIsCompleted(true);
+    try {
+      await axios.post(`${API_BASE_URL}/api/post-test/submit`, { participantCode: localStorage.getItem('participantCode'), answers, logs: Object.values(logs), startedAt: new Date(testStartTime.current).toISOString(), finishedAt: new Date().toISOString(), totalDuration: (Date.now() - testStartTime.current)/1000 });
+      setIsCompleted(true);
+    } catch (error) {
+      console.error('Test gönderme hatası:', error);
+    }
   };
 
   if (isCompleted) return <div className="p-20 text-center"><div className="text-green-500 text-5xl">✔</div><h2 className="text-xl font-bold">Son testiniz başarıyla tamamlandı.</h2><p>Araştırmaya katıldığınız için teşekkürler!</p><button onClick={() => navigate('/')} className="mt-4 bg-blue-600 text-white px-4 py-2 rounded">Çıkış</button></div>;

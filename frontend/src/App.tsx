@@ -2,9 +2,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import PreTest from './pages/PreTest';
 import PostTest from './pages/PostTest';
-import AdminDashboard from './pages/AdminDashboard';
-import ParticipantDetail from './pages/ParticipantDetail';
-import AdvancedAnalysis from './pages/AdvancedAnalysis';
 
 export default function App() {
   return (
@@ -13,9 +10,6 @@ export default function App() {
         <Route path="/" element={<Login />} />
         <Route path="/pre-test" element={<PreTest />} />
         <Route path="/post-test" element={<PostTest />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/participant/:code" element={<ParticipantDetail />} />
-        <Route path="/admin/analysis" element={<AdvancedAnalysis />} />
       </Routes>
     </BrowserRouter>
   );
