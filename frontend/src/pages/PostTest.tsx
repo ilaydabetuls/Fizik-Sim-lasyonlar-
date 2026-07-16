@@ -7,6 +7,7 @@ const postTest1Questions = [
   {
     id: 'q1',
     text: 'Eğik atışta, hava direnci yokken, yatay hız bileşeni nasıl değişir?',
+    image: null as string | null,
     options: [
       { id: 'A', text: 'Sabit kalır' },
       { id: 'B', text: 'Zamanla artar' },

@@ -7,6 +7,7 @@ const preTest1Questions = [
   {
     id: 'q1',
     text: 'Serbest düşüşte, hava direnci yokken, bir cismin ivmesi nedir?',
+    image: null as string | null,
     options: [
       { id: 'A', text: '0 m/s²' },
       { id: 'B', text: '9.8 m/s²' },
