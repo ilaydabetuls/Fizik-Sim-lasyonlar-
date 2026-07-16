@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Girişi - Statik Test</title>
+  <style>
+    body { font-family: Inter, Arial, sans-serif; background:#f7f7fb; color:#111; }
+    .card { max-width:480px; margin:6vh auto; background:white; padding:24px; border-radius:10px; box-shadow:0 6px 20px rgba(20,20,40,.06); }
+    h2 { text-align:center; margin:0 0 18px 0; }
+    input { width:100%; padding:12px 14px; border-radius:8px; border:1px solid #e6e6ee; font-size:16px; }
+    button { width:100%; margin-top:12px; padding:12px; background:#2563eb; color:white; border:none; border-radius:8px; font-size:16px; cursor:pointer; }
+    .msg { margin-top:12px; text-align:center; font-size:14px; }
+    .err { color:#c0392b; }
+    .ok { color:#2d8659; }
+    .small { font-size:13px; color:#666; margin-top:10px; text-align:center;}
+    .meta { font-size:12px; color:#999; margin-top:8px; text-align:center;}
+    .controls { display:flex; gap:8px; margin-bottom:12px; align-items:center; }
+    label.switch { font-size:13px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Araştırma Girişi (Statik Test)</h2>
+
+    <div class="controls">
+      <label class="switch">
+        <input id="mockToggle" type="checkbox" checked /> Mock mode
+      </label>
+      <div class="meta">Mock: sunucu olmadan test</div>
+    </div>
+
+    <form id="loginForm">
+      <div style="margin-bottom:10px;">
+        <input id="username" placeholder="Kullanıcı adı veya kod" required />
+      </div>
+      <div style="margin-bottom:6px;">
+        <input id="password" type="password" placeholder="Şifre" required />
+      </div>
+
+      <div id="msg" class="msg"></div>
+
+      <button id="submitBtn" type="submit">Giriş Yap</button>
+    </form>
+
+    <div class="small">
+      Mock mod açıkken test kullanıcı: <strong>admin</strong> / <strong>password</strong><br>
+      Gerçek API kullanmak için mock'u kapatın ve gerekirse apiUrl değişkenini deploy URL'inize güncelleyin.
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const form = document.getElementById('loginForm');
+      const msgEl = document.getElementById('msg');
+      const submitBtn = document.getElementById('submitBtn');
+      const mockToggle = document.getElementById('mockToggle');
+
+      // Deploy sırasında gerçek API'yi kullanmak isterseniz burayı değiştirin;
+      // mockMode=false iken bu URL kullanılacak. Relative /api/admin/login kullanmak
+      // çoğu durumda en iyisidir (aynı origin).
+      const apiUrl = '/api/admin/login';
+
+      function setMsg(text, type) {
+        msgEl.textContent = text;
+        msgEl.className = 'msg ' + (type === 'error' ? 'err' : (type === 'ok' ? 'ok' : ''));
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        setMsg('', null);
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Giriş yapılıyor…';
+
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const mockMode = mockToggle.checked;
+
+        if (mockMode) {
+          await new Promise(r => setTimeout(r, 600));
+          if (username === 'admin' && password === 'password') {
+            setMsg('Giriş başarılı (mock). Yönlendiriliyorsunuz...', 'ok');
+            console.log('[mock] token: MOCK_TOKEN_12345');
+            setTimeout(() => { window.location.href = '/admin'; }, 700);
+          } else {
+            setMsg('Bağlantı veya kimlik doğrulama hatası (mock).', 'error');
+          }
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Giriş Yap';
+          return;
+        }
+
+        try {
+          const res = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
+          });
+
+          const text = await res.text();
+          let body;
+          try { body = text ? JSON.parse(text) : null; } catch (e) { body = text; }
+
+          console.log('API response status', res.status, body);
+
+          if (!res.ok) {
+            const serverMsg = body && body.message ? body.message : (typeof body === 'string' ? body : 'Giriş başarısız');
+            setMsg(serverMsg, 'error');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Giriş Yap';
+            return;
+          }
+
+          if (body && body.token) {
+            localStorage.setItem('admin_token', body.token);
+            setMsg('Giriş başarılı. Yönlendiriliyorsunuz...', 'ok');
+            setTimeout(() => { window.location.href = '/admin'; }, 700);
+          } else {
+            setMsg('Sunucudan geçerli token alınamadı.', 'error');
+          }
+        } catch (err) {
+          console.error('Fetch error:', err);
+          setMsg('Bağlantı hatası: ' + (err && err.message ? err.message : 'Ağ hatası veya CORS engeli'), 'error');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Giriş Yap';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
